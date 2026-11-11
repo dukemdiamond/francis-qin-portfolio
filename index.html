@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Francis Qin</title>
+    <meta name="description" content="Francis Qin, Electrical and Computer Engineering student at Northeastern University.">
+    <link rel="icon" type="image/svg+xml" href="panda.svg">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .proj-thumbs { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin: 0.4rem 0 1rem; border: 0; }
+        .proj-thumbs img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 6px; border: 1px solid var(--ink-rule); transition: opacity 0.15s; }
+        .proj-thumbs:hover img { opacity: 0.85; }
+        .proj-thumbs-one { grid-template-columns: 1fr; }
+        .proj-thumbs-one img { aspect-ratio: 2 / 1; }
+    </style>
+</head>
+<body>
+    <main class="container home-container">
+        <div class="title">
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+            <img class="avatar" src="images/francis.jpg" alt="Photo of Francis Qin" width="52" height="52">
+            <h1 class="nostyle"><a class="name" href="index.html">Francis Qin</a></h1><span class="aim-spot"><a class="aim-link" href="aim.html" aria-label="Aim trainer" title="aim trainer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="3.2"></circle><path d="M12 1.5v3.2M12 19.3v3.2M1.5 12h3.2M19.3 12h3.2"></path></svg></a><a class="aim-pointer" href="aim.html"><svg width="24" height="18" viewBox="0 0 24 18" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 15C12 15 5.5 11 4 2.5"></path><path d="M1.5 5.5L4 2l3 3"></path></svg><span>bored? try your luck at aim lab</span></a></span>
+            <span class="title-break" aria-hidden="true"></span>
+            <a class="extra" href="projects.html">Projects</a>
+            <a class="extra" href="recruiter.html">For Recruiters</a>
+            <a class="extra" href="Francis_Qin_Resume.pdf" target="_blank" rel="noopener noreferrer">Resume</a>
+        </div>
+
+        <div class="prose">
+            <p class="intro">Hi! I'm an electrical and computer engineering student at <a href="https://www.northeastern.edu/" target="_blank" rel="noopener noreferrer">Northeastern University</a>. This past summer I was an electrical engineering intern at <strong>Piotech</strong> in Shanghai, troubleshooting and maintaining the PECVD and ALD thin film deposition tools used in semiconductor manufacturing, and iterating CAD models in SolidWorks. On my own time I built a servo-powered robotic arm, designed in SolidWorks, 3D printed, and driven by a Raspberry Pi Pico. Before that I led a three-person team through a laser-cut and 3D-printed tabletop game, from CAD package to a client-approved prototype. I like work where the hardware, the code, and the mechanical design all have to agree. Off the bench, I play competitively on Northeastern's club tennis team. Always up for a <a href="mailto:qin.f@northeastern.edu">chat</a>.</p>
+
+            <p class="status"><span class="status-dot"></span><span id="statusText">looking for a co-op, Jan &ndash; Aug 2027</span></p>
+
+            <h1>Latest News</h1>
+            <ul class="news">
+                <li>
+                    <span class="news-date">Aug 2026</span>
+                    <span class="news-body">Wrapped up my internship at <strong>Piotech</strong> in Shanghai. I spent the summer on the production floor keeping PECVD and ALD deposition systems running, and learned how the tools work end to end, from the process chambers to the control subsystems.</span>
+                </li>
+                <li>
+                    <span class="news-date">Aug 2026</span>
+                    <span class="news-body">Finished the <strong>servo-powered robotic arm</strong>: designed in SolidWorks, printed on a Bambu Lab printer, and calibrated through a lot of test runs until the joint movements were repeatable.</span>
+                </li>
+                <li>
+                    <span class="news-date">May 2026</span>
+                    <span class="news-body">Started as an Electrical Engineering Intern at <strong>Piotech</strong>, a semiconductor equipment maker in Shanghai.</span>
+                </li>
+                <li>
+                    <span class="news-date">Dec 2025</span>
+                    <span class="news-body">Delivered a fully functional <strong>tabletop board game</strong> to our clients after several rounds of 3D printing, laser cutting, and playtesting with a three-person team.</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="work-grid">
+            <section class="work-col">
+                <h1>Experience</h1>
+
+                <div class="exp">
+                    <div class="exp-body">
+                        <div class="exp-head">
+                            <span class="exp-org">Piotech Inc.</span>
+                            <span class="exp-when">May &ndash; Aug 2026</span>
+                        </div>
+                        <div class="exp-role">Electrical Engineering Intern &middot; Shanghai, China</div>
+                        <ul class="role-list">
+                            <li>Performed maintenance and troubleshooting on production machinery for PECVD and ALD thin film deposition systems used in semiconductor manufacturing, supporting equipment uptime on the production floor.</li>
+                            <li>Designed and iterated CAD models in SolidWorks, refining part geometry and assemblies across multiple revisions to meet manufacturing tolerances.</li>
+                            <li>Worked with engineers and mentors to understand system-level operation of deposition tools, from process chambers to control subsystems, and applied it to daily troubleshooting.</li>
+                            <li>Evaluated semiconductor equipment localization trends in China, including competitive positioning against NAURA, AMEC, and international suppliers.</li>
+                            <li>Documented equipment specifications, maintenance procedures, and test results for internal engineering records, and shadowed manufacturing, quality control, and R&amp;D teams.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="exp">
+                    <div class="exp-body">
+                        <div class="exp-head">
+                            <span class="exp-org">Northeastern University</span>
+                            <span class="exp-when">Expected Apr 2028</span>
+                        </div>
+                        <div class="exp-role">B.S. Electrical and Computer Engineering &middot; 3.6 GPA &middot; Boston, MA</div>
+                        <ul class="role-list">
+                            <li>Coursework: Circuits and Signals, Fundamentals of Engineering Algorithms, Fundamentals of Networks, Embedded Design/Enabling Robotics, Differential Equations &amp; Linear Algebra, Physics II, Computing Fundamentals for Engineers.</li>
+                            <li>Competitive player on the Club Tennis team, and a student engineer in the American Society of Mechanical Engineers.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="work-col work-col-projects">
+                <h1>Projects</h1>
+
+                <div class="item">
+                    <h3>servo-powered robotic arm</h3>
+                    <div class="tags"><span class="tag">SolidWorks</span><span class="tag">Raspberry Pi Pico</span><span class="tag">3D Printing</span></div>
+                    <a class="proj-thumbs" href="projects.html#robotic-arm" aria-label="See photos and wiring for the robotic arm">
+                        <img src="images/projects/robotic-arm.jpg" alt="The 3D-printed orange and green robotic arm" loading="lazy">
+                        <img src="images/projects/robotic-arm-electronics.jpg" alt="The Raspberry Pi Pico 2 and joystick controller on a breadboard" loading="lazy">
+                    </a>
+                    <p>A robotic arm designed and iterated in SolidWorks, then 3D printed in full on a Bambu Lab printer to check fit, range of motion, and structural integrity before final assembly. A Raspberry Pi Pico drives the servos for coordinated joint movement, with positioning and motion sequences calibrated through repeated testing for precision and repeatability. Every iteration and test result is documented to guide the next revision of the mechanics and controls.</p>
+                    <p class="project-links">
+                        <a href="projects.html#robotic-arm" class="project-link-text">photos + wiring</a>
+                    </p>
+                </div>
+
+                <div class="item">
+                    <h3>tabletop board game</h3>
+                    <div class="tags"><span class="tag">SolidWorks</span><span class="tag">AutoCAD</span><span class="tag">Laser Cutting</span><span class="tag">3D Printing</span></div>
+                    <a class="proj-thumbs proj-thumbs-one" href="projects.html#board-game" aria-label="See photos and layout for the tabletop board game">
+                        <img src="images/projects/board-game.jpg" alt="The two-halved laser-cut tabletop game with 3D-printed pucks and blockers" loading="lazy">
+                    </a>
+                    <p>Led end-to-end development of a fully functional tabletop game for two clients. Produced the complete CAD package (part models, assemblies, and manufacturing drawings) in SolidWorks and AutoCAD, then ran prototyping cycles with 3D printing and laser cutting, reworking geometry and assembly around playtesting feedback and failure points. Ran design reviews for a three-person team, documenting decisions and revisions until we landed on a client-approved prototype.</p>
+                    <p class="project-links">
+                        <a href="projects.html#board-game" class="project-link-text">photo + layout</a>
+                    </p>
+                </div>
+            </section>
+        </div>
+
+        <div class="prose">
+            <h1>Skills</h1>
+            <ul class="news">
+                <li>
+                    <span class="news-date">Tools</span>
+                    <span class="news-body">SolidWorks, AutoCAD, Quartus Prime, LTspice, MATLAB, 3D Printing, Laser Cutting</span>
+                </li>
+                <li>
+                    <span class="news-date">Hardware</span>
+                    <span class="news-body">Raspberry Pi Pico, DE1-SoC, digital multimeter, oscilloscope, function generator</span>
+                </li>
+                <li>
+                    <span class="news-date">Code</span>
+                    <span class="news-body">Python, Java, C++, Kotlin &middot; Linux, Windows</span>
+                </li>
+                <li>
+                    <span class="news-date">Other</span>
+                    <span class="news-body">SolidWorks CSWA certified &middot; proficient in Mandarin Chinese</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="site-footer">
+            <div>
+                Francis Qin<br>
+                Electrical and Computer Engineering
+            </div>
+            <div>
+                Boston, MA &middot; Malvern, PA<br>
+                <a href="mailto:qin.f@northeastern.edu">qin.f@northeastern.edu</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>projects · Francis Qin</title>
+    <meta name="description" content="Projects by Francis Qin: a servo-powered robotic arm and a tabletop board game.">
+    <link rel="icon" type="image/svg+xml" href="panda.svg">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root { --diag-signal: #7fb2ff; --diag-power: #ff9b73; --diag-ground: rgba(240, 233, 221, 0.45); }
+        [data-theme="light"] { --diag-signal: #2160c4; --diag-power: #c4471c; --diag-ground: rgba(30, 28, 24, 0.5); }
+
+        .proj { margin-top: 3.5rem; }
+        .proj-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+        .proj-head h2 { margin: 0; font-size: 1.35rem; color: var(--ink-fg); font-weight: 600; }
+        .proj-when { color: var(--ink-faint); font-size: 0.9rem; }
+        .proj .tags { margin: 0.6rem 0 1.2rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+        .proj p, .proj li { color: var(--ink-muted); line-height: 1.7; }
+        .proj h3 { margin: 2rem 0 0.6rem; font-size: 0.95rem; font-weight: 500; color: var(--ink-faint); text-transform: lowercase; }
+        .proj h3::before { content: '/ '; }
+        .proj ul { padding-left: 1.1rem; margin: 0; }
+        .proj li + li { margin-top: 0.35rem; }
+
+        .shots { display: grid; grid-template-columns: 3fr 4fr; gap: 0.8rem; margin: 1.2rem 0 0.4rem; }
+        .shots figure, .diagram { margin: 0; }
+        .shots img { display: block; width: 100%; height: 380px; object-fit: cover; border-radius: 6px; border: 1px solid var(--ink-rule); }
+        figcaption { margin-top: 0.5rem; font-size: 0.82rem; color: var(--ink-faint); line-height: 1.5; }
+
+        .diagram { padding: 1rem; border: 1px solid var(--ink-rule); border-radius: 8px; background: var(--ink-panel); }
+        .diagram svg { display: block; width: 100%; height: auto; }
+        .diagram .box { fill: var(--ink-bg); stroke: var(--ink-muted); stroke-width: 1.5; }
+        .diagram .box-mcu { fill: var(--ink-bg); stroke: var(--ink-fg); stroke-width: 2; }
+        .diagram .t { fill: var(--ink-fg); font: 600 15px var(--ink-font); }
+        .diagram .s { fill: var(--ink-muted); font: 400 12px var(--ink-font); }
+        .diagram .lbl { font: 500 11.5px var(--ink-font); }
+        .diagram .sig { stroke: var(--diag-signal); stroke-width: 2; fill: none; }
+        .diagram .pwr { stroke: var(--diag-power); stroke-width: 2; fill: none; }
+        .diagram .gnd { stroke: var(--diag-ground); stroke-width: 2; fill: none; stroke-dasharray: 5 4; }
+        .diagram .sig-t { fill: var(--diag-signal); }
+        .diagram .pwr-t { fill: var(--diag-power); }
+        .diagram .gnd-t { fill: var(--diag-ground); }
+        .legend { display: flex; flex-wrap: wrap; gap: 1.2rem; margin-top: 0.8rem; font-size: 0.8rem; color: var(--ink-muted); }
+        .legend span::before { content: ''; display: inline-block; width: 18px; height: 0; margin-right: 0.45rem; vertical-align: middle; border-top: 2px solid; }
+        .legend .l-sig::before { border-color: var(--diag-signal); }
+        .legend .l-pwr::before { border-color: var(--diag-power); }
+        .legend .l-gnd::before { border-color: var(--diag-ground); border-top-style: dashed; }
+
+        .shot-wide { margin: 1.2rem 0 0.4rem; }
+        .shot-wide img { display: block; width: 100%; height: auto; border-radius: 6px; border: 1px solid var(--ink-rule); }
+        :root { --mdf: #b98a5a; --printed: #f4f2ec; --band: #8fd19e; }
+        [data-theme="light"] { --mdf: #9a6b3d; --printed: #ffffff; --band: #3f9e57; }
+        .diagram .joint rect { fill: var(--mdf); }
+        .diagram .floor { fill: var(--mdf); opacity: 0.16; }
+        .diagram .zone { stroke: var(--ink-faint); stroke-width: 1.5; fill: none; }
+        .diagram .zn { fill: var(--ink-muted); font: 600 26px var(--ink-font); }
+        .diagram .hole { fill: #050505; stroke: var(--ink-faint); stroke-width: 1; }
+        .diagram .printed { fill: var(--printed); stroke: var(--ink-muted); stroke-width: 1.5; }
+        .diagram .band { stroke: var(--band); stroke-width: 2.5; fill: none; }
+        .diagram .call path { stroke: var(--ink-faint); stroke-width: 1.2; fill: none; }
+        .legend .l-mdf::before { border-color: var(--mdf); border-top-width: 6px; }
+        .legend .l-print::before { border-color: var(--printed); border-top-width: 6px; }
+        .legend .l-band::before { border-color: var(--band); }
+
+        @media (max-width: 640px) {
+            .shots { grid-template-columns: 1fr; }
+            .shots img { height: auto; }
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <div class="title">
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+            <img class="avatar" src="images/francis.jpg" alt="Photo of Francis Qin" width="52" height="52">
+            <h1 class="nostyle"><a class="name" href="index.html">Francis Qin</a></h1>
+            <span class="title-break" aria-hidden="true"></span>
+            <a class="extra" href="projects.html">Projects</a>
+            <a class="extra" href="recruiter.html">For Recruiters</a>
+            <a class="extra" href="Francis_Qin_Resume.pdf" target="_blank" rel="noopener noreferrer">Resume</a>
+        </div>
+
+        <div class="prose">
+            <h1>Projects</h1>
+            <p>Things I've designed, printed, wired up, and debugged.</p>
+        </div>
+
+        <!-- Robotic arm -->
+        <section class="proj" id="robotic-arm">
+            <div class="proj-head">
+                <h2>Servo-powered robotic arm</h2>
+                <span class="proj-when">May &ndash; Aug 2026</span>
+            </div>
+            <div class="tags"><span class="tag">SolidWorks</span><span class="tag">Raspberry Pi Pico 2</span><span class="tag">Servos</span><span class="tag">3D Printing</span></div>
+
+            <p>A four-joint desktop arm (base, shoulder, elbow, and gripper), each joint driven by its own hobby servo. I designed and iterated the parts in SolidWorks, printed the full assembly on a Bambu Lab printer, and checked fit, range of motion, and structural integrity before final assembly. Two thumb joysticks on a breadboard steer it, and a Raspberry Pi Pico 2 reads them and drives the servos.</p>
+
+            <div class="shots">
+                <figure>
+                    <img src="images/projects/robotic-arm.jpg" alt="An orange and green 3D-printed robotic arm on a desk, with a servo mounted on its round base, a parallel linkage up the arm, and a two-finger gripper reaching down" loading="lazy">
+                    <figcaption>The printed arm. The shoulder servo sits on the side of the base, and the parallel linkage keeps the gripper level as the arm reaches.</figcaption>
+                </figure>
+                <figure>
+                    <img src="images/projects/robotic-arm-electronics.jpg" alt="A breadboard with a Raspberry Pi Pico 2 and two thumb joysticks, with jumper wires running out to the servo leads" loading="lazy">
+                    <figcaption>The controller: a Pico 2 and two joysticks on a breadboard, wired out to the four servo leads (labelled with tape).</figcaption>
+                </figure>
+            </div>
+
+            <h3>how it's wired</h3>
+            <figure class="diagram">
+                <svg viewBox="0 0 720 440" role="img" aria-labelledby="wireTitle wireDesc">
+                    <title id="wireTitle">Robotic arm wiring diagram</title>
+                    <desc id="wireDesc">Two joysticks send analog position and a button signal into the Raspberry Pi Pico 2. The Pico sends a separate PWM control signal to each of four servos: base, shoulder, elbow, and gripper. The servos are powered from a separate 5 volt supply that shares ground with the Pico, which is powered over USB.</desc>
+
+                    <!-- joysticks -->
+                    <rect class="box" x="20" y="50" width="170" height="92" rx="8"/>
+                    <text class="t" x="38" y="80">Joystick A</text>
+                    <text class="s" x="38" y="102">2-axis thumbstick</text>
+                    <text class="s" x="38" y="122">X / Y &rarr; voltage</text>
+
+                    <rect class="box" x="20" y="182" width="170" height="92" rx="8"/>
+                    <text class="t" x="38" y="212">Joystick B</text>
+                    <text class="s" x="38" y="234">2-axis thumbstick</text>
+                    <text class="s" x="38" y="254">X / Y + push button</text>
+
+                    <!-- pico -->
+                    <rect class="box-mcu" x="280" y="40" width="170" height="250" rx="10"/>
+                    <text class="t" x="365" y="72" text-anchor="middle">Raspberry Pi</text>
+                    <text class="t" x="365" y="92" text-anchor="middle">Pico 2</text>
+                    <text class="s" x="365" y="122" text-anchor="middle">reads joysticks</text>
+                    <text class="s" x="365" y="140" text-anchor="middle">(ADC + GPIO)</text>
+                    <text class="s" x="365" y="178" text-anchor="middle">maps input</text>
+                    <text class="s" x="365" y="196" text-anchor="middle">to joint angles</text>
+                    <text class="s" x="365" y="234" text-anchor="middle">drives servos</text>
+                    <text class="s" x="365" y="252" text-anchor="middle">(4 &times; PWM, 50 Hz)</text>
+
+                    <!-- joystick signals into pico -->
+                    <path class="sig" d="M190 96 H280"/>
+                    <path class="sig" d="M190 228 H280"/>
+                    <text class="lbl sig-t" x="243" y="88" text-anchor="middle">XY</text>
+                    <text class="lbl sig-t" x="243" y="220" text-anchor="middle">XY + btn</text>
+
+                    <!-- 3.3V to joysticks -->
+                    <path class="pwr" d="M280 150 H205 V160 H190"/>
+                    <path class="pwr" d="M205 160 V262 H190"/>
+                    <text class="lbl pwr-t" x="245" y="143" text-anchor="middle">3.3 V</text>
+
+                    <!-- servos -->
+                    <g>
+                        <rect class="box" x="540" y="30" width="160" height="52" rx="8"/>
+                        <text class="t" x="558" y="54">Base servo</text>
+                        <text class="s" x="558" y="72">rotates the arm</text>
+
+                        <rect class="box" x="540" y="100" width="160" height="52" rx="8"/>
+                        <text class="t" x="558" y="124">Shoulder servo</text>
+                        <text class="s" x="558" y="142">lifts the upper arm</text>
+
+                        <rect class="box" x="540" y="170" width="160" height="52" rx="8"/>
+                        <text class="t" x="558" y="194">Elbow servo</text>
+                        <text class="s" x="558" y="212">reaches in and out</text>
+
+                        <rect class="box" x="540" y="240" width="160" height="52" rx="8"/>
+                        <text class="t" x="558" y="264">Gripper servo</text>
+                        <text class="s" x="558" y="282">opens and closes</text>
+                    </g>
+
+                    <!-- pwm lines -->
+                    <path class="sig" d="M450 80 H495 V56 H540"/>
+                    <path class="sig" d="M450 130 H505 V126 H540"/>
+                    <path class="sig" d="M450 180 H505 V196 H540"/>
+                    <path class="sig" d="M450 230 H495 V266 H540"/>
+                    <text class="lbl sig-t" x="495" y="110" text-anchor="middle">PWM</text>
+
+                    <!-- servo power supply -->
+                    <rect class="box" x="540" y="350" width="160" height="62" rx="8"/>
+                    <text class="t" x="558" y="376">5 V supply</text>
+                    <text class="s" x="558" y="396">servo power only</text>
+                    <path class="pwr" d="M700 372 H712 V56 H700"/>
+                    <path class="pwr" d="M712 126 H700"/>
+                    <path class="pwr" d="M712 196 H700"/>
+                    <path class="pwr" d="M712 266 H700"/>
+
+                    <!-- usb power to pico -->
+                    <rect class="box" x="300" y="350" width="130" height="62" rx="8"/>
+                    <text class="t" x="318" y="376">USB</text>
+                    <text class="s" x="318" y="396">power + code</text>
+                    <path class="pwr" d="M365 350 V290"/>
+
+                    <!-- common ground -->
+                    <path class="gnd" d="M430 396 H540"/>
+                    <path class="gnd" d="M450 270 H470 V396"/>
+                    <text class="lbl gnd-t" x="486" y="388" text-anchor="middle">GND</text>
+                    <text class="lbl gnd-t" x="486" y="430" text-anchor="middle">shared ground</text>
+                </svg>
+                <div class="legend"><span class="l-sig">control signal</span><span class="l-pwr">power</span><span class="l-gnd">ground</span></div>
+                <figcaption>Simplified signal flow, not a pin-for-pin schematic. Servos can pull a lot of current when they start moving or stall, so they run off their own 5 V supply rather than the Pico. The supply's ground is tied to the Pico's ground so the PWM signals share a reference.</figcaption>
+            </figure>
+
+            <h3>how it works</h3>
+            <ul>
+                <li>Each joystick axis is a potentiometer, so pushing the stick changes a voltage that the Pico reads with its analog-to-digital converter.</li>
+                <li>The Pico turns those readings into a target angle for each joint.</li>
+                <li>A hobby servo sets its angle from the width of a pulse repeated about 50 times a second, roughly 1 ms at one end of its travel and 2 ms at the other. The Pico generates a separate PWM signal for each of the four servos.</li>
+                <li>I calibrated each servo's endpoints and the motion sequencing through repeated test runs, so the joints move to the same place every time and stay inside the range the printed parts allow.</li>
+            </ul>
+
+            <h3>what went into it</h3>
+            <ul>
+                <li>Several design revisions in SolidWorks, refining part geometry and the assembly between prints.</li>
+                <li>Printing the whole arm on a Bambu Lab printer and test-fitting before final assembly to check range of motion and structural integrity.</li>
+                <li>Writing down each iteration and test result to guide the next round of mechanical and control changes.</li>
+            </ul>
+        </section>
+
+        <!-- Board game -->
+        <section class="proj" id="board-game">
+            <div class="proj-head">
+                <h2>Tabletop board game</h2>
+                <span class="proj-when">Oct &ndash; Dec 2025</span>
+            </div>
+            <div class="tags"><span class="tag">SolidWorks</span><span class="tag">AutoCAD</span><span class="tag">Laser Cutting</span><span class="tag">3D Printing</span></div>
+
+            <p>A fully functional tabletop game built for two clients by a three-person team. I led it from start to finish. The board is two mirrored halves, one per player, laser cut from MDF with finger-jointed walls. Each half is split into scoring zones worth +1 to +5, with a goal pocket at the far end. The pucks, blockers, posts, and goal arch are all 3D printed.</p>
+
+            <figure class="shot-wide">
+                <img src="images/projects/board-game.jpg" alt="Two laser-cut MDF trays side by side, each marked with scoring zones from +1 to +5, with white 3D-printed pucks and angled blockers, a rubber band stretched between printed posts, and a white printed arch over a goal opening" loading="lazy">
+                <figcaption>The final prototype: two mirrored halves, laser-cut MDF with 3D-printed pieces.</figcaption>
+            </figure>
+
+            <h3>how the board is laid out</h3>
+            <figure class="diagram">
+                <svg viewBox="0 0 720 500" role="img" aria-labelledby="boardTitle boardDesc">
+                    <title id="boardTitle">Top-down diagram of one half of the board</title>
+                    <desc id="boardDesc">One half of the board seen from above. From the player's end: a +1 zone with a half-circle, then +2 and +3 zones, a rubber band stretched between two printed posts, and a +5 zone with a goal pocket under a printed arch. Small slots in the floor hold the angled blockers, and round pucks sit on the board. The wall is laser-cut MDF with finger joints, and the second half is a mirror image.</desc>
+
+                    <!-- tray -->
+                    <rect class="box" x="60" y="30" width="300" height="440" rx="4" style="stroke: var(--mdf); stroke-width: 6"/>
+                    <rect class="floor" x="63" y="33" width="294" height="434"/>
+                    <!-- finger joints on the walls -->
+                    <g class="joint">
+                        <rect x="54" y="90" width="12" height="30"/><rect x="54" y="210" width="12" height="30"/><rect x="54" y="330" width="12" height="30"/>
+                        <rect x="354" y="90" width="12" height="30"/><rect x="354" y="210" width="12" height="30"/><rect x="354" y="330" width="12" height="30"/>
+                    </g>
+
+                    <!-- zone dividers -->
+                    <path class="zone" d="M63 160 H357 M63 270 H357 M63 370 H357"/>
+                    <text class="zn" x="110" y="105">+5</text><text class="zn" x="280" y="105">+5</text>
+                    <text class="zn" x="110" y="232">+3</text><text class="zn" x="280" y="232">+3</text>
+                    <text class="zn" x="200" y="335" text-anchor="middle">+2</text>
+                    <text class="zn" x="210" y="412" text-anchor="middle">+1</text>
+                    <path class="zone" d="M160 470 A50 50 0 0 1 260 470"/>
+
+                    <!-- goal pocket and arch -->
+                    <rect class="hole" x="170" y="62" width="80" height="50"/>
+                    <rect class="printed" x="150" y="40" width="120" height="22" rx="3"/>
+
+                    <!-- rubber band between posts -->
+                    <path class="band" d="M84 172 H336 M84 182 H336"/>
+                    <circle class="printed" cx="80" cy="177" r="11"/>
+                    <circle class="printed" cx="340" cy="177" r="11"/>
+
+                    <!-- floor slots -->
+                    <rect class="hole" x="230" y="205" width="24" height="7"/>
+                    <rect class="hole" x="245" y="300" width="24" height="7"/>
+                    <rect class="hole" x="120" y="300" width="24" height="7"/>
+
+                    <!-- blockers (angled) -->
+                    <path class="printed" d="M112 290 h34 l10 12 l-10 12 h-34 z"/>
+                    <path class="printed" d="M150 380 h34 l10 12 l-10 12 h-34 z"/>
+                    <path class="printed" d="M90 430 h34 l10 12 l-10 12 h-34 z"/>
+                    <path class="printed" d="M270 430 h34 l10 12 l-10 12 h-34 z"/>
+
+                    <!-- pucks -->
+                    <circle class="printed" cx="255" cy="240" r="16"/>
+                    <circle class="printed" cx="300" cy="395" r="16"/>
+                    <circle class="printed" cx="125" cy="398" r="16"/>
+                    <circle class="printed" cx="150" cy="420" r="16"/>
+
+                    <!-- callouts -->
+                    <g class="call">
+                        <path d="M270 51 H420"/><text class="t" x="430" y="56">Goal pocket + arch</text><text class="s" x="430" y="74">opening in the floor, printed arch</text>
+                        <path d="M366 111 H420"/><text class="t" x="430" y="116">Scoring zones</text><text class="s" x="430" y="134">+1 near the player, up to +5</text>
+                        <path d="M351 177 H420"/><text class="t" x="430" y="182">Rubber band on posts</text><text class="s" x="430" y="200">stretched across the board</text>
+                        <path d="M269 303 H420"/><text class="t" x="430" y="300">Floor slots</text><text class="s" x="430" y="318">laser-cut, hold the blockers</text>
+                        <path d="M194 392 L230 353 H420"/><text class="t" x="430" y="358">Angled blockers</text><text class="s" x="430" y="376">3D printed, set in the slots</text>
+                        <path d="M316 395 L380 413 H420"/><text class="t" x="430" y="418">Pucks</text><text class="s" x="430" y="436">3D printed discs</text>
+                    </g>
+                    <text class="s" x="210" y="492" text-anchor="middle">player's end · the other half is a mirror image</text>
+                </svg>
+                <div class="legend"><span class="l-mdf">laser-cut MDF</span><span class="l-print">3D printed</span><span class="l-band">rubber band</span></div>
+                <figcaption>One half of the board from above, simplified. Piece positions vary from game to game.</figcaption>
+            </figure>
+
+            <h3>how we built it</h3>
+            <ul>
+                <li>Produced the complete CAD package (part models, assemblies, and manufacturing drawings) in SolidWorks and AutoCAD.</li>
+                <li>Ran prototyping cycles with 3D printing and laser cutting, reworking geometry and assembly around playtesting feedback and the places parts failed.</li>
+                <li>Ran our design reviews, documenting decisions, test outcomes, and revisions until we landed on a prototype the clients approved.</li>
+            </ul>
+        </section>
+
+        <div class="site-footer">
+            <div>
+                Francis Qin<br>
+                Electrical and Computer Engineering
+            </div>
+            <div>
+                Boston, MA &middot; Malvern, PA<br>
+                <a href="mailto:qin.f@northeastern.edu">qin.f@northeastern.edu</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
